@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: knowledgeflow_db
+    environment:
+      POSTGRES_USER: knowledgeflow
+      POSTGRES_PASSWORD: knowledgeflow
+      POSTGRES_DB: knowledgeflow
+
+    ports:
+    - "5432:5432"

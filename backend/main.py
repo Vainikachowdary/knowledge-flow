@@ -1,10 +1,9 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi import  UploadFile
-from fastapi import File
-from pypdf import PdfReader
 from rag import rag_pipeline,process_pdf
 from fastapi import HTTPException
+from database import save_document
 import rag
 app = FastAPI()
 
@@ -48,25 +47,29 @@ def search(query:str):
         "search": query
     }
 
+@app.post("/upload")
+async def upload_file(file: UploadFile):
 
-@app.post("/upload")  # post/upload endpoint
-async def upload_file(file:UploadFile):# func can perform async operations and client is sending us a file
-    if file.content_type!= "application/pdf":
+    if file.content_type != "application/pdf":
         raise HTTPException(
             status_code=400,
-            detail= "Only PDF files are allowed."
+            detail="Only PDF files are allowed."
         )
+
     if not file.filename:
         raise HTTPException(
             status_code=400,
             detail="A filename is required."
         )
-    contents = await file.read()  # wait for the uploaded file's contents to be read.
-    with open("uploads/" + file.filename, "wb") as f: #open the  destination PDF.
-        f.write(contents) #put the pdf data into it.
 
+    contents = await file.read()
+
+    with open("uploads/" + file.filename, "wb") as f:
+        f.write(contents)
+
+    # Process the PDF
     try:
-        chunk_count = process_pdf("uploads/"+ file.filename)
+        chunk_count = process_pdf("uploads/" + file.filename)
 
     except Exception as e:
         print("PDF ERROR:", e)
@@ -74,8 +77,22 @@ async def upload_file(file:UploadFile):# func can perform async operations and c
             status_code=400,
             detail="Could not process the PDF."
         )
+
+    # Save document information to PostgreSQL
+    try:
+        save_document(
+            file.filename,
+            "uploads/" + file.filename
+        )
+
+    except Exception as e:
+        print("DATABASE ERROR:", e)
+        raise HTTPException(
+            status_code=500,
+            detail="Could not save document information."
+        )
+
     return {
         "filename": file.filename,
         "chunks": chunk_count
-    }    #your file was processed and i created X chunks.
-
+    }

@@ -1,3 +1,5 @@
 .env
 uploads/
 tempCodeRunnerFile.python
+__pycache__/
+*.pyc
