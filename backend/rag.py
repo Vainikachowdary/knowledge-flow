@@ -86,6 +86,11 @@ def rag_pipeline(query):
 
     augmented_prompt = f"""
     Answer the question using the following context.
+
+    If the answer cannot be found in the context,sat:
+    "I couldn't find the answer in the uploaded document."
+
+    Do not make up information or use outside knowledge.
     
     Context:
     {context}
