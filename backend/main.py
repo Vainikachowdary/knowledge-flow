@@ -3,8 +3,9 @@ from pydantic import BaseModel
 from fastapi import  UploadFile
 from rag import rag_pipeline,process_pdf
 from fastapi import HTTPException
-from database import save_document
+from database import save_document , get_documents , delete_document, get_document
 import rag
+import os
 app = FastAPI()
 
 class chatRequest(BaseModel):
@@ -46,6 +47,49 @@ def search(query:str):
     return {
         "search": query
     }
+
+@app.get("/documents")
+def documents():
+    rows = get_documents()
+
+    documents = []
+
+    for row in rows:
+        documents.append({
+            "id": row[0],
+            "filename": row[1],
+            "source": row[2],
+            "uploaded_at":row[3]
+        })
+
+    return {
+        "documents": rows
+    }
+
+
+@app.delete("/documents/{document_id}")
+def delete_document_endpoint(document_id: int):
+
+    document = get_document(document_id)
+
+    if document is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found."
+        )
+
+    file_path = document[2]
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    delete_document(document_id)
+
+    return {
+        "message": "Document deleted successfully",
+        "document_id": document_id
+    }
+
 
 @app.post("/upload")
 async def upload_file(file: UploadFile):
