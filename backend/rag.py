@@ -28,7 +28,9 @@ chunks = []
 
 def process_pdf(pdf_path):
     global index, chunks
+    
     reader = PdfReader(pdf_path)
+
 
 
 #cleaning
@@ -41,7 +43,6 @@ def process_pdf(pdf_path):
         text= text.replace("\n"," ")
         cleaned_text += text + " "
         
-    #print(cleaned_text[:1000])
 
     documents = text_splitter.create_documents([cleaned_text], metadatas=[{"source": pdf_path}])
     chunks = [doc.page_content for doc in documents]
@@ -55,6 +56,32 @@ def process_pdf(pdf_path):
 #embedding
 
     embeddings = model.encode(chunks) #take the chunks and turn it into an embedding vector
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
   
 
@@ -62,11 +89,11 @@ def process_pdf(pdf_path):
     
 #creating FAISS index
 
-
     dimension = embeddings.shape[1]
     
     index = faiss.IndexFlatL2(dimension)
     index.add(embeddings)
+
 
     return len(chunks)
     

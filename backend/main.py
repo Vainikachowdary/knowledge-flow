@@ -1,12 +1,21 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi import  UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from rag import rag_pipeline,process_pdf
 from fastapi import HTTPException
 from database import save_document , get_documents , delete_document, get_document
 import rag
 import os
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class chatRequest(BaseModel):
     question : str
@@ -127,7 +136,8 @@ async def upload_file(file: UploadFile):
         save_document(
             file.filename,
             "uploads/" + file.filename
-        )
+        ) 
+
 
     except Exception as e:
         print("DATABASE ERROR:", e)

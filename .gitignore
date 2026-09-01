@@ -3,3 +3,4 @@ uploads/
 tempCodeRunnerFile.python
 __pycache__/
 *.pyc
+node_modules/

@@ -1,0 +1,177 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b0b12;
+  color: #ffffff;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #0b0b12;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 40px;
+  border-bottom: 1px solid #242430;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.header p {
+  margin: 6px 0 0;
+  color: #858594;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.upload-btn,
+.send-btn {
+  border: none;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+.upload-btn {
+  padding: 10px 18px;
+  border-radius: 8px;
+}
+
+.status {
+  color: #60a5fa;
+  font-size: 14px;
+}
+
+.clear-btn {
+  background: transparent;
+  border: 1px solid #333340;
+  color: #aaa;
+  padding: 9px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 24px 40px;
+}
+
+.document-panel,
+.chat-panel {
+  background: #11111a;
+  border: 1px solid #252532;
+  border-radius: 14px;
+  padding: 20px;
+  min-height: 500px;
+}
+
+.document-panel h2,
+.chat-panel h2 {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+.document-placeholder,
+.chat-placeholder {
+  height: 430px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #858594;
+  text-align: center;
+}
+
+.pdf-icon,
+.ai-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: #111f35;
+  color: #93c5fd;
+  margin-bottom: 16px;
+}
+
+.document-placeholder p,
+.chat-placeholder p {
+  margin: 0 0 8px;
+  color: #ddd;
+}
+
+.document-placeholder span,
+.chat-placeholder span {
+  font-size: 14px;
+}
+
+.input-area {
+  display: flex;
+  gap: 12px;
+  padding: 20px 40px 28px;
+  border-top: 1px solid #242430;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 1px solid #30303d;
+  background: #11111a;
+  color: white;
+  outline: none;
+}
+
+.input-area input:focus {
+  border-color: #7c3aed;
+}
+
+.send-btn {
+  width: 50px;
+  border-radius: 10px;
+  font-size: 20px;
+}
+
+@media (max-width: 800px) {
+  .header {
+    padding: 20px;
+  }
+
+  .content {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .input-area {
+    padding: 20px;
+  }
+
+  .header-actions {
+    gap: 8px;
+  }
+}
