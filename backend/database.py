@@ -8,19 +8,34 @@ database_url = os.getenv("DATABASE_URL")
 
 
 #to save documents
-def save_document(filename, source):
+def save_document(filename, source, file_hash):
     with psycopg.connect(database_url) as connection:
         with connection.cursor() as cursor:
             cursor.execute(
                 """
-                INSERT INTO documents (filename, source)
-                VALUES (%s, %s);
+                INSERT INTO documents (filename, source, file_hash)
+                VALUES (%s, %s, %s);
                 """,
-                (filename, source)
+                (filename, source, file_hash)
             )
 
         connection.commit()
 
+# to check whether a document already exists
+def document_exists(file_hash):
+    with psycopg.connect(database_url) as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT 1 FROM documents
+                WHERE file_hash = %s
+
+                LIMIT 1;
+                """,
+                (file_hash,)
+            )
+
+            return cursor.fetchone() is not None
 
 #to get all documents at once
 def get_documents():
