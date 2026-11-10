@@ -4,3 +4,8 @@ tempCodeRunnerFile.python
 __pycache__/
 *.pyc
 node_modules/
+# Python virtual environments
+.venv/
+venv/
+**/.venv/
+**/venv/
